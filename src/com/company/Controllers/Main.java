@@ -16,6 +16,8 @@ public class Main {
         TOTAL_ITERATIONS = scanner.nextInt();
         System.out.println("You have chosen for " + TOTAL_CLUSTERS + " clusters and " + TOTAL_ITERATIONS + " iterations");
 
+        CsvReader reader = new CsvReader();
+        reader.csvReader();
         /*while (TOTAL_ITERATIONS > 0)
         {
             TOTAL_ITERATIONS--;
