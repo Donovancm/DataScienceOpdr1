@@ -6,6 +6,7 @@ package com.company.Models;
 public class Customer
 {
     private double[] dimensions;
+    public int clusterId = 0;
 
     public Customer(int offers)
     {
@@ -25,5 +26,20 @@ public class Customer
     public double[] getDimensions()
     {
         return dimensions;
+    }
+
+    public static double distance(double[] customers, double[] centroids)
+    {
+        double distance = 0;
+        for (int i = 0; i < centroids.length; i++)
+        {
+            distance += Math.pow(customers[i] - centroids[i], 2);
+        }
+        return Math.sqrt(distance);
+    }
+
+    public void setCluster(int cluster)
+    {
+        this.clusterId = cluster;
     }
 }
