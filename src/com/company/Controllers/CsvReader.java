@@ -6,16 +6,17 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Donovan on 8-3-2017.
  */
 public class CsvReader
 {
+
     public ArrayList<Customer> csvReader()
     {
-        //String dataFile = getClass().getResource("WineDataTransposed.csv").getFile();
-        String dataFile = "C:\\Users\\Donovan\\Desktop\\Dev6aq\\DataScienceOpdr1\\src\\com\\company\\Resources\\WineData.csv";
+        String dataFile = "C:\\Users\\Michel\\IdeaProjects\\DataScienceOpdr1\\src\\com\\company\\Resources\\WineData.csv";
         BufferedReader buffedReader = null;
         String line = "";
         String csvSplitter = ",";
@@ -34,7 +35,6 @@ public class CsvReader
                 for (int i = 0; i < data.length; i++)
                 {
                     if (i >= customers.size()) {
-                        System.out.println(customers.size());
                         customers.add(new Customer(32));
                     }
 

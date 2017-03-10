@@ -12,10 +12,9 @@ import java.util.Random;
  */
 public class KMeans
 {
-    private final int TOTAL_CLUSTERS;
+    private int TOTAL_CLUSTERS;
     private List<Customer> customers;
     private List<Cluster> clusters;
-    //private double
 
     public KMeans(int clusters)
     {
@@ -27,136 +26,63 @@ public class KMeans
     public void start()
     {
         CsvReader reader = new CsvReader();
+        // Read in CSV file and put it in List of Customers
         customers = reader.csvReader();
+        // Now we need to make centroids out of the List of Customers
         allocateCentroids(customers);
     }
 
+    // Step 1: Select xx points as centroid and assign them to a cluster
     public void allocateCentroids(List<Customer> customers)
     {
+        // New random to make random Clusters
         Random random = new Random();
         int r = random.nextInt(customers.size());
 
+        // We need multiple clusters, with each its own centroid
         for (int i = 0; i < TOTAL_CLUSTERS; i++)
         {
+            // Making a new Cluster
             Cluster cluster = new Cluster(i);
+            // Make new centroid (which is a Customer). Let the centroid get the wineData of the Customer
             Customer centroid = cluster.createCentroids(customers.get(r).getDimensions());
+            // Add the centroid to the cluster
             cluster.setCentroid(centroid);
+            // Add the new made cluster to the list of clusters so we can get it later
             clusters.add(cluster);
         }
-
-        plotClusters();
+        System.out.println(clusters);
     }
 
-    private List getCentroids()
-    {
-        List<Customer> centroids = new ArrayList<>(TOTAL_CLUSTERS);
-
-        for (Cluster cluster : clusters)
-        {
-            Customer centroid = cluster.getCentroid();
-            Customer customer = new Customer(centroid.getDimensions());
-            centroids.add(customer);
-            System.out.println(customer);
-        }
-        return centroids;
-    }
-
-    private void plotClusters()
-    {
-        for (int i = 0; i < TOTAL_CLUSTERS; i++)
-        {
-            Cluster cluster = clusters.get(i);
-            cluster.plotCluster();
-        }
-    }
-
+    // Step 2: Assign all points to the closest centroid
     public void calculate()
     {
-        boolean done = false;
-
-        while (!done)
-        {
-            assignCluster();
-
-            List<Customer> oldCentroids = getCentroids();
-            calculateCentroids();
-            List<Customer> newCentroids = getCentroids();
-
-            double distance = 0.0;
-            for (int i = 0; i < oldCentroids.size(); i++)
-            {
-                distance += Customer.distance(oldCentroids.get(i).getDimensions(), newCentroids.get(i).getDimensions());
-            }
-            plotClusters();
-
-            if (distance == 0)
-            {
-                done = true;
-            }
-        }
+        assignCluster();
     }
 
+    // Step 2: Assign all points (customers) to the closest centroid
     private void assignCluster()
     {
-        double max = Double.MAX_VALUE;
-        double min = max;
-        int clusterId = 0;
-        double distance = 0.0;
-
+        // Take all customers of the list
         for (Customer customer : customers)
         {
-            min = max;
+            //
             for (int i = 0; i < TOTAL_CLUSTERS; i++)
             {
+                // get the clusters
                 Cluster cluster = clusters.get(i);
-                distance = Customer.distance(customer.getDimensions(), cluster.getCentroid().getDimensions());
-
-                if (distance < min)
-                {
-                    min = distance;
-                    clusterId = i;
-                }
+                double distance = Customer.euclideanDistance(customer.getDimensions(), cluster.getCentroid().getDimensions());
             }
-            customer.setCluster(clusterId);
-            clusters.get(clusterId).addCustomer(customer);
-            //System.out.println(customer);
+            //customer.setCluster(clusterId);
+            //clusters.get(clusterId).addCustomer(customer);
         }
 
-        for (Cluster cluster : clusters)
+        /*for (Cluster cluster : clusters)
         {
-            if (cluster.getCustomer().size() == 0)
-            {
-                removeClusters();
-                allocateCentroids(customers);
-                assignCluster();
-                break;
-            }
-        }
+            allocateCentroids(customers);
+            break;
+        }*/
     }
 
-    private void removeClusters()
-    {
-        clusters.removeAll(clusters);
-    }
-
-    private void calculateCentroids()
-    {
-        for (Cluster cluster : clusters)
-        {
-            double[] dimensions = new double[customers.get(0).getDimensions().length];
-            List<Customer> customers = cluster.getCustomer();
-
-            for (int i = 0; i < dimensions.length; i++)
-            {
-                double sum = 0;
-                for (Customer customer : customers)
-                {
-                    sum += customer.getDimensions()[i];
-                }
-                dimensions[i] = sum / customers.size();
-            }
-            Customer centroid = new Customer(dimensions);
-            cluster.setCentroid(centroid);
-        }
-    }
+    // Step 3: Recompute centroid of each cluster
 }

@@ -28,7 +28,7 @@ public class Customer
         return dimensions;
     }
 
-    public static double distance(double[] customers, double[] centroids)
+    public static double euclideanDistance(double[] customers, double[] centroids)
     {
         double distance = 0;
         for (int i = 0; i < centroids.length; i++)

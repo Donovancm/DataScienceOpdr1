@@ -41,20 +41,4 @@ public class Cluster {
     {
         customers.add(customer);
     }
-
-    public List getCustomer()
-    {
-        return customers;
-    }
-
-    public void plotCluster()
-    {
-        //System.out.println("Cluster: " + id);
-        //System.out.println("Centroid: " + centroid);
-        /*System.out.println("Customers: ");
-        for (Customer c : customers)
-        {
-            System.out.println(c);
-        }*/
-    }
 }
