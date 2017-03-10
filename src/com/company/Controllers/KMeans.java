@@ -51,26 +51,26 @@ public class KMeans
             // Add the new made cluster to the list of clusters so we can get it later
             clusters.add(cluster);
         }
-        System.out.println(clusters);
     }
 
     // Step 2: Assign all points to the closest centroid
     public void calculate()
     {
-        assignCluster();
+        assignCustomerToCluster();
     }
 
     // Step 2: Assign all points (customers) to the closest centroid
-    private void assignCluster()
+    private void assignCustomerToCluster()
     {
         // Take all customers of the list
         for (Customer customer : customers)
         {
-            //
+            // Calculate distance to each cluster
             for (int i = 0; i < TOTAL_CLUSTERS; i++)
             {
                 // get the clusters
                 Cluster cluster = clusters.get(i);
+                // Calculate distance to cluster
                 double distance = Customer.euclideanDistance(customer.getDimensions(), cluster.getCentroid().getDimensions());
             }
             //customer.setCluster(clusterId);
